@@ -3,9 +3,30 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def releaseStoreFile = System.getenv("ACCELMETER_UPLOAD_STORE_FILE")
+def releaseStorePassword = System.getenv("ACCELMETER_UPLOAD_STORE_PASSWORD")
+def releaseKeyAlias = System.getenv("ACCELMETER_UPLOAD_KEY_ALIAS")
+def releaseKeyPassword = System.getenv("ACCELMETER_UPLOAD_KEY_PASSWORD")
+def hasReleaseSigning =
+        releaseStoreFile &&
+        releaseStorePassword &&
+        releaseKeyAlias &&
+        releaseKeyPassword
+
 android {
     namespace 'com.accelmeter'
     compileSdk 34
+
+    signingConfigs {
+        release {
+            if (hasReleaseSigning) {
+                storeFile file(releaseStoreFile)
+                storePassword releaseStorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
+        }
+    }
 
     defaultConfig {
         applicationId "com.accelmeter"
@@ -20,6 +41,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig hasReleaseSigning ? signingConfigs.release : signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
