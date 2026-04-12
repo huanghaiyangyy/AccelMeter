@@ -7,7 +7,8 @@ def releaseStoreFile = System.getenv("ACCELMETER_RELEASE_STORE_FILE")
 def releaseStorePassword = System.getenv("ACCELMETER_RELEASE_STORE_PASSWORD")
 def releaseKeyAlias = System.getenv("ACCELMETER_RELEASE_KEY_ALIAS")
 def releaseKeyPassword = System.getenv("ACCELMETER_RELEASE_KEY_PASSWORD")
-def releaseStore = releaseStoreFile ? file(releaseStoreFile) : null
+def releaseStorePath = releaseStoreFile?.trim()
+def releaseStore = releaseStorePath ? file(releaseStorePath) : null
 def hasReleaseSigning =
         releaseStore?.exists() &&
         releaseStorePassword &&
@@ -42,7 +43,11 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig hasReleaseSigning ? signingConfigs.release : signingConfigs.debug
+            if (hasReleaseSigning) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
