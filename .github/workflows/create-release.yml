@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
+      - 'main'
       - 'copilot/add-upward-arrow-icon'
 
 jobs:
