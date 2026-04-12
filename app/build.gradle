@@ -7,8 +7,9 @@ def releaseStoreFile = System.getenv("ACCELMETER_RELEASE_STORE_FILE")
 def releaseStorePassword = System.getenv("ACCELMETER_RELEASE_STORE_PASSWORD")
 def releaseKeyAlias = System.getenv("ACCELMETER_RELEASE_KEY_ALIAS")
 def releaseKeyPassword = System.getenv("ACCELMETER_RELEASE_KEY_PASSWORD")
+def releaseStore = releaseStoreFile ? file(releaseStoreFile) : null
 def hasReleaseSigning =
-        releaseStoreFile &&
+        releaseStore?.exists() &&
         releaseStorePassword &&
         releaseKeyAlias &&
         releaseKeyPassword
@@ -18,9 +19,9 @@ android {
     compileSdk 34
 
     signingConfigs {
-        release {
-            if (hasReleaseSigning) {
-                storeFile file(releaseStoreFile)
+        if (hasReleaseSigning) {
+            release {
+                storeFile releaseStore
                 storePassword releaseStorePassword
                 keyAlias releaseKeyAlias
                 keyPassword releaseKeyPassword
