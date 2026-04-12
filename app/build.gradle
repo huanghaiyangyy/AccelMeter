@@ -3,10 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
-def releaseStoreFile = System.getenv("ACCELMETER_UPLOAD_STORE_FILE")
-def releaseStorePassword = System.getenv("ACCELMETER_UPLOAD_STORE_PASSWORD")
-def releaseKeyAlias = System.getenv("ACCELMETER_UPLOAD_KEY_ALIAS")
-def releaseKeyPassword = System.getenv("ACCELMETER_UPLOAD_KEY_PASSWORD")
+def releaseStoreFile = System.getenv("ACCELMETER_RELEASE_STORE_FILE")
+def releaseStorePassword = System.getenv("ACCELMETER_RELEASE_STORE_PASSWORD")
+def releaseKeyAlias = System.getenv("ACCELMETER_RELEASE_KEY_ALIAS")
+def releaseKeyPassword = System.getenv("ACCELMETER_RELEASE_KEY_PASSWORD")
 def hasReleaseSigning =
         releaseStoreFile &&
         releaseStorePassword &&
